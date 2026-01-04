@@ -340,3 +340,25 @@ img, iframe {
     padding: 15px;
     border-radius: 0 10px 10px 0;
 }
+
+.header-nav {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.header-nav a {
+    color: #ffcc00;
+    text-decoration: none;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: 0.3s;
+    border-bottom: 1px solid transparent;
+}
+
+.header-nav a:hover {
+    border-bottom: 1px solid #ffcc00;
+    opacity: 0.8;
+}
