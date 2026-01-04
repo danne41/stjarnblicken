@@ -133,3 +133,36 @@ function acceptCookies() {
 window.onclick = function(event) {
     if (event.target.className === 'modal') event.target.style.display = "none";
 }
+
+async function fetchSpaceNews() {
+    const newsContainer = document.getElementById('news-container');
+    
+    try {
+        // Vi hämtar de 3 senaste artiklarna från pålitliga källor
+        const response = await fetch('https://api.spaceflightnewsapi.net/v4/articles/?limit=3');
+        const data = await response.json();
+        
+        newsContainer.innerHTML = ''; // Rensa laddnings-texten
+
+        data.results.forEach(article => {
+            const card = document.createElement('div');
+            card.className = 'news-card';
+            
+            card.innerHTML = `
+                <img src="${article.image_url}" class="news-image" alt="${article.title}">
+                <div class="news-content">
+                    <span class="news-site">${article.news_site}</span>
+                    <h3 class="news-title">${article.title}</h3>
+                    <a href="${article.url}" target="_blank" class="news-btn">Läs artikeln <span>→</span></a>
+                </div>
+            `;
+            newsContainer.appendChild(card);
+        });
+    } catch (error) {
+        console.error("Kunde inte hämta nyheter:", error);
+        newsContainer.innerHTML = '<p>Kunde inte ladda nyheter just nu. Men rymden finns kvar!</p>';
+    }
+}
+
+// Kom ihåg att anropa funktionen i din DOMContentLoaded:
+// fetchSpaceNews();
