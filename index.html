@@ -82,9 +82,10 @@
     <footer>
     
     <div class="footer-links">
-        <a href="javascript:void(0)" onclick="openModal('about-modal')">Om Stjärnblicken</a> | 
-        <a href="#" onclick="openModal('privacy-modal')">Integritetspolicy</a>
-    </div>
+    <a href="javascript:void(0)" onclick="openModal('about-modal')">Om Stjärnblicken</a> | 
+    <a href="javascript:void(0)" onclick="openModal('contact-modal')">Kontakt</a> | 
+    <a href="javascript:void(0)" onclick="openModal('privacy-modal')">Integritetspolicy</a>
+</div>
         <p>© 2026 Stjärnblicken | All data från NASA APOD</p>
 </footer>
 
@@ -112,7 +113,21 @@
         </p>
     </div>
 </div>
-
+<div id="contact-modal" class="modal">
+    <div class="modal-content" style="text-align: center;">
+        <span class="close" onclick="closeModal('contact-modal')">&times;</span>
+        <h2 style="color: #ffcc00; margin-bottom: 20px;">Kontakta Stjärnblicken</h2>
+        <p style="margin-bottom: 20px;">Har du frågor, förslag eller vill du samarbeta? Vi hör gärna från dig!</p>
+        
+        <div style="background: rgba(255,204,0,0.1); padding: 20px; border-radius: 10px; border: 1px dashed #ffcc00;">
+            <p style="font-size: 1.2rem; font-weight: bold;">
+                <a href="mailto:din-mail@gmail.com" style="color: #ffcc00; text-decoration: none;">din-mail@gmail.com</a>
+            </p>
+        </div>
+        
+        <p style="margin-top: 20px; font-size: 0.9rem; opacity: 0.7;">Vi svarar oftast inom 24 timmar.</p>
+    </div>
+</div>
 
 <div id="privacy-modal" class="modal">
     <div class="modal-content">
