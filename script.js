@@ -97,9 +97,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // 3. Starta rymdfakta
     displayNewFact();
 
-    // 4. Cookie-banner logik
+    // 4. Starta rymdnyheter (HÄR LÄGGER VI TILL DEN!)
+    fetchSpaceNews();
+
+    // 5. Cookie-banner logik
     const cookieBanner = document.getElementById('cookie-banner');
-    if (!localStorage.getItem('cookiesAccepted')) {
+    if (cookieBanner && !localStorage.getItem('cookiesAccepted')) {
         setTimeout(() => cookieBanner.classList.add('show'), 2000);
     }
 });
@@ -165,4 +168,4 @@ async function fetchSpaceNews() {
 }
 
 // Kom ihåg att anropa funktionen i din DOMContentLoaded:
-// fetchSpaceNews();
+ fetchSpaceNews();
