@@ -1,38 +1,29 @@
 // 1. KONFIGURATION
 const apiKey = '5mDJmGbfPpOWOEB2R8aKKaP5vXjwPVFbfacIUaM8';
-const today = new Date().toISOString().split("T")[0];
 
 // 2. HUVUDFUNKTION FÖR ATT HÄMTA DATA
-async function getSpaceData(date = "") {
-    console.log("Startar hämtning...");
-    const targetDate = date || today;
+async function getSpaceData(targetDate = "") {
+    console.log("Anropar NASA...");
     
-    // Kolla om vi redan har detta datum i cachen
-    const cachedData = localStorage.getItem('nasa_cache_' + targetDate);
-    if (cachedData) {
-        console.log("Hittade i cachen!");
-        renderContent(JSON.parse(cachedData));
-        return; 
+    // Om inget datum anges, skicka ingen datum-parameter alls (NASA väljer då senaste bilden)
+    let url = `https://api.nasa.gov/planetary/apod?api_key=${apiKey}`;
+    if (targetDate) {
+        url += `&date=${targetDate}`;
     }
 
-    const url = `https://api.nasa.gov/planetary/apod?api_key=${apiKey}&date=${targetDate}`;
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 15000); // Ökat till 15 sekunder 
-
     try {
-        const response = await fetch(url, { signal: controller.signal });
+        const response = await fetch(url);
         if (!response.ok) throw new Error("NASA svarar inte");
         
         const data = await response.json();
-        clearTimeout(timeoutId);
-
-        localStorage.setItem('nasa_cache_' + targetDate, JSON.stringify(data));
-        
         renderContent(data);
         
-        // Översätt i efterhand
+        // Vi översätter bara titeln för att vara säkra på att det inte kraschar
         translateToSwedish(data.title, 'title');
-        translateToSwedish(data.explanation, 'description');
+        // Beskrivningen behåller vi på engelska eller översätter separat om den inte är för lång
+        if(data.explanation.length < 1000) {
+            translateToSwedish(data.explanation, 'description');
+        }
 
     } catch (error) {
         console.error("Fel vid hämtning:", error);
@@ -42,25 +33,28 @@ async function getSpaceData(date = "") {
 
 // 3. FUNKTION FÖR ATT VISA INNEHÅLLET
 function renderContent(data) {
-    const isSearch = data.date !== today;
-    const titlePrefix = isSearch ? `Rymden den ${data.date}: ` : "";
+    // Sätt textinnehåll
+    document.getElementById('title').innerText = data.title;
+    document.getElementById('date-display').innerText = `Rymdarkivet: ${data.date}`;
     
-    document.getElementById('title').innerText = titlePrefix + data.title;
-    document.getElementById('date-display').innerText = `Datum: ${data.date}`;
-    document.getElementById('description').innerText = data.explanation;
+    // Skapa snygg artikelstart
+    const descriptionElement = document.getElementById('description');
+    const firstLetter = data.explanation.charAt(0);
+    const restOfText = data.explanation.slice(1);
+    descriptionElement.innerHTML = `<span class="first-letter">${firstLetter}</span>${restOfText}`;
 
     const mediaContainer = document.getElementById('media-container');
     if(data.media_type === "video") {
-        mediaContainer.innerHTML = `<iframe src="${data.url}" frameborder="0" allowfullscreen style="height:400px; width:100%; border-radius:10px;"></iframe>`;
+        mediaContainer.innerHTML = `<iframe src="${data.url}" frameborder="0" allowfullscreen class="nasa-video" style="height:400px; width:100%; border-radius:10px;"></iframe>`;
     } else {
-        mediaContainer.innerHTML = `<img src="${data.url}" alt="${data.title}" style="width:100%; border-radius:10px;">`;
+        mediaContainer.innerHTML = `<img src="${data.url}" alt="${data.title}" class="nasa-image" style="width:100%; border-radius:10px; cursor:pointer;" onclick="window.open(this.src, '_blank')">`;
     }
 }
 
-// 4. RESERVPLAN OM NÅGOT GÅR FEL
+// 4. RESERVPLAN
 function showFallback() {
-    document.getElementById('title').innerText = "Stjärnorna tar en paus";
-    document.getElementById('description').innerText = "Just nu når vi inte NASA. Prova att ladda om sidan eller sök på ett annat datum!";
+    document.getElementById('title').innerText = "Vintergatan väntar";
+    document.getElementById('description').innerText = "Just nu har vi svårt att nå NASA:s servrar. Det kan bero på underhåll eller att datumet du valt ännu inte publicerats i deras tidszon. Prova igen om en liten stund!";
     document.getElementById('media-container').innerHTML = `<img src="https://images.unsplash.com/photo-1464802686167-b939a6910659?auto=format&fit=crop&w=800&q=80" style="width:100%; border-radius:10px;">`;
 }
 
@@ -70,91 +64,70 @@ async function translateToSwedish(text, elementId) {
         const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|sv`);
         const json = await res.json();
         if(json.responseData.translatedText) {
-            document.getElementById(elementId).innerText = json.responseData.translatedText;
+            if(elementId === 'description') {
+                const txt = json.responseData.translatedText;
+                document.getElementById(elementId).innerHTML = `<span class="first-letter">${txt.charAt(0)}</span>${txt.slice(1)}`;
+            } else {
+                document.getElementById(elementId).innerText = json.responseData.translatedText;
+            }
         }
     } catch (err) {
         console.log("Översättning misslyckades.");
     }
 }
 
-// 6. EVENT LISTENERS (KNAPPAR)
+// 6. ALLA EVENT LISTENERS
 document.addEventListener('DOMContentLoaded', () => {
-    // Sätt max-datum till idag
-    const dateInput = document.getElementById('search-date');
-    if(dateInput) dateInput.max = today;
+    // 1. Hämta dagens bild
+    getSpaceData();
 
-    // Lyssna på sökknappen
+    // 2. Hantera Sök-knapp
     const searchBtn = document.getElementById('search-btn');
     if(searchBtn) {
         searchBtn.addEventListener('click', () => {
             const pickedDate = document.getElementById('search-date').value;
             if (pickedDate) {
-                document.getElementById('title').innerText = "Hämtar rymden...";
                 getSpaceData(pickedDate);
-            } else {
-                alert("Välj ett datum först!");
             }
         });
     }
 
-    // Kör första hämtningen för idag
-    getSpaceData();
+    // 3. Starta rymdfakta
+    displayNewFact();
+
+    // 4. Cookie-banner logik
+    const cookieBanner = document.getElementById('cookie-banner');
+    if (!localStorage.getItem('cookiesAccepted')) {
+        setTimeout(() => cookieBanner.classList.add('show'), 2000);
+    }
 });
 
+// --- ÖVRIGA HJÄLPFUNKTIONER ---
+
 const spaceFacts = [
-    "En dag på Venus är längre än ett år på Venus. Det tar planeten längre tid att rotera runt sin egen axel än att gå ett varv runt solen.",
-    "Neutronstjärnor är så täta att en tesked av deras material skulle väga lika mycket som Mount Everest.",
-    "Det finns fler stjärnor i universum än vad det finns sandkorn på alla jordens stränder tillsammans.",
-    "I rymden kan ingen höra dig skrika. Eftersom det inte finns någon luft (medium) kan ljudvågor inte färdas.",
-    "Footavtrycken på månen kommer att finnas kvar i miljontals år eftersom det inte finns någon vind som kan blåsa bort dem.",
-    "Olympus Mons på Mars är den högsta vulkanen i solsystemet, den är tre gånger högre än Mount Everest.",
-    "Solens massa utgör 99,86% av hela solsystemets totala massa.",
-    "Det regnar diamanter på planeterna Jupiter och Saturnus.",
-    "Vi ser faktiskt in i det förflutna när vi tittar på stjärnorna. Ljuset från den närmaste stjärnan (förutom solen) tar 4,2 år att nå oss."
+    "En dag på Venus är längre än ett år på Venus.",
+    "Neutronstjärnor är så täta att en tesked väger som Mount Everest.",
+    "Det regnar diamanter på Jupiter och Saturnus.",
+    "Vi ser in i det förflutna när vi tittar på stjärnorna.",
+    "Olympus Mons på Mars är solsystemets högsta vulkan."
 ];
 
 function displayNewFact() {
-    const randomIndex = Math.floor(Math.random() * spaceFacts.length);
     const factElement = document.getElementById('fun-fact');
     if (factElement) {
-        factElement.style.opacity = 0; // Enkel animeringseffekt
-        setTimeout(() => {
-            factElement.innerText = spaceFacts[randomIndex];
-            factElement.style.opacity = 1;
-        }, 300);
+        const randomIndex = Math.floor(Math.random() * spaceFacts.length);
+        factElement.innerText = spaceFacts[randomIndex];
     }
 }
 
-// Kör funktionen när sidan laddas (lägg till denna rad inuti din DOMContentLoaded-listener)
-displayNewFact();
-
-function openModal(id) {
-    document.getElementById(id).style.display = "block";
-}
-
-function closeModal(id) {
-    document.getElementById(id).style.display = "none";
-}
-
-// Stäng modalen om man klickar utanför boxen
-window.onclick = function(event) {
-    if (event.target.className === 'modal') {
-        event.target.style.display = "none";
-    }
-}
-
-// --- COOKIE LOGIK ---
-const cookieBanner = document.getElementById('cookie-banner');
-const hasAccepted = localStorage.getItem('cookiesAccepted');
-
-// Visa bannern efter 2 sekunder om de inte redan accepterat
-if (!hasAccepted) {
-    setTimeout(() => {
-        cookieBanner.classList.add('show');
-    }, 2000);
-}
+function openModal(id) { document.getElementById(id).style.display = "block"; }
+function closeModal(id) { document.getElementById(id).style.display = "none"; }
 
 function acceptCookies() {
     localStorage.setItem('cookiesAccepted', 'true');
-    cookieBanner.classList.remove('show');
+    document.getElementById('cookie-banner').classList.remove('show');
+}
+
+window.onclick = function(event) {
+    if (event.target.className === 'modal') event.target.style.display = "none";
 }
