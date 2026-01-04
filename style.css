@@ -372,3 +372,53 @@ img, iframe {
     text-shadow: 0 0 10px #ffcc00;
     transform: translateY(-2px);
 }
+
+.floating-fb {
+    position: fixed;
+    right: 0;
+    top: 50%; /* Startar på mitten av skärmen */
+    transform: translateY(-50%); /* Centrerar den perfekt */
+    background-color: #1877F2; /* Facebooks officiella blå */
+    color: white;
+    padding: 12px 15px;
+    border-radius: 10px 0 0 10px; /* Rundade hörn bara på vänster sida */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    z-index: 9999; /* Alltid överst */
+    transition: all 0.3s ease;
+    box-shadow: -2px 0 10px rgba(0,0,0,0.3);
+}
+
+/* Texten "Följ oss" döljs på små skärmar eller innan man hovrar */
+.floating-fb span {
+    font-weight: bold;
+    font-size: 14px;
+    display: none;
+}
+
+.floating-fb:hover {
+    padding-right: 25px;
+    background-color: #166fe5;
+}
+
+.floating-fb:hover span {
+    display: inline;
+}
+
+/* Responsiv anpassning för mobiler */
+@media (max-width: 600px) {
+    .floating-fb {
+        top: auto;
+        bottom: 20px; /* Hamnar längst ner till höger på mobilen */
+        border-radius: 50%; /* Blir en cirkel på mobilen */
+        width: 50px;
+        height: 50px;
+        justify-content: center;
+        right: 15px;
+    }
+    .floating-fb span {
+        display: none !important;
+    }
+}
