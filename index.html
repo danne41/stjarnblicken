@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stjärnblicken - Din dagliga rymdresa</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="video-header">
+    <video playsinline autoplay muted loop poster="fallback-image.jpg">
+        <source src="space_bg.mp4" type="video/mp4">
+        Din webbläsare stöder inte video.
+    </video>
+    <div class="header-overlay">
+        <div class="container">
+            <h1 id="greeting">God dag, stjärnskådare</h1>
+            <p>Utforska universum, en dag i taget.</p>
+        </div>
+    </div>
+</header>
+
+    <main class="container">
+        <section class="search-section">
+    <h2>Se rymden på din födelsedag</h2>
+    <div class="search-box">
+        <input type="date" id="search-date">
+        <button id="search-btn">Sök datum</button>
+    </div>
+</section>
+    <section id="content-card" class="card">
+        <h2 id="title">Väntar på stjärnorna...</h2>
+        <p id="date-display"></p>
+        <div id="media-container">
+            </div>
+        <div class="info-box">
+            <p id="description">Berättelsen laddas...</p>
+        </div>
+    </section>
+        <div class="ad-space" style="text-align:center; margin: 20px 0; min-height: 90px; background: rgba(255,255,255,0.03);">
+    <small style="color: #666;">Annons</small>
+</div>
+
+<section id="content-card" class="card"> ... </section>
+
+<div class="ad-space" style="text-align:center; margin: 20px 0; min-height: 250px; background: rgba(255,255,255,0.03);">
+    <small style="color: #666;">Annons</small>
+</div>
+</main>
+<section class="facts-container">
+    <div class="card facts-card">
+        <h3><i class="icon">✨</i> Visste du att...</h3>
+        <p id="fun-fact">Hämtar ett spännande fakta från universum...</p>
+        <button onclick="displayNewFact()" class="small-btn">Ge mig ett till!</button>
+    </div>
+
+    <div class="static-info">
+        <h3>Om universum</h3>
+        <p>Universum är cirka 13,8 miljarder år gammalt och expanderar ständigt. Ljuset från de stjärnor du ser på natten har ofta färdats i tusentals år för att nå dina ögon. På Stjärnblicken vill vi göra rymdens mysterier tillgängliga för alla på svenska.</p>
+    </div>
+</section>
+    <footer>
+    <p>© 2026 Stjärnblicken | All data från NASA APOD</p>
+    <div class="footer-links">
+        <a href="javascript:void(0)" onclick="openModal('about-modal')">Om Stjärnblicken</a> | 
+        <a href="#" onclick="openModal('privacy-modal')">Integritetspolicy</a>
+    </div>
+</footer>
+
+<div id="about-modal" class="modal">
+
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('about-modal')">&times;</span>
+        <div class="about-section">
+            <h2>Välkommen till Stjärnblicken</h2>
+            <p class="intro-text">Stjärnblicken föddes ur en enkel tanke: att universums oändliga skönhet och de mysterier som döljer sig i rymden förtjänar att berättas på svenska.</p>
+            
+            <div class="about-grid">
+                <div class="about-item">
+                    <h3>Vår Vision</h3>
+                    <p>Vi vill erbjuda en daglig stund av förundran. Genom att kombinera NASA:s unika bildarkiv med noggranna svenska översättningar gör vi rymden tillgänglig för alla – oavsett om du är en erfaren stjärnskådare eller bara nyfiken på vad som finns bortom horisonten.</p>
+                </div>
+                
+                <div class="about-item">
+                    <h3>Kunskap på svenska</h3>
+                    <p>Mycket av den banbrytande rymdforskningen publiceras i första hand på engelska. Stjärnblicken fungerar som en brygga som översätter och tillgängliggör dessa fantastiska upptäckter, så att detaljerna och magin bevaras på vårt eget språk.</p>
+                </div>
+            </div>
+
+            <div class="personal-note">
+                <p><em>"Stjärnblicken är din dagliga portal till kosmos – en plats för reflektion över vår plats i universum."</em></p>
+            </div>
+            
+            <p>Har du frågor, förslag eller vill du bara prata om rymden? Kontakta teamet bakom Stjärnblicken på: <a href="mailto:info@stjarnblicken.se" style="color:#ffcc00;">info@stjarnblicken.se</a></p>
+        </div>
+    </div>
+
+</div> 
+
+
+<div id="privacy-modal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('privacy-modal')">&times;</span>
+        <h2>Integritetspolicy & Cookies</h2>
+<p>Denna policy förklarar hur Stjärnblicken samlar in och använder data. Vi värnar om din integritet och följer gällande regler enligt GDPR. Sidan är en kunskapsportal som finansieras genom framtida annonssamarbeten.</p>
+
+<h3>1. Annonsering & Cookies</h3>
+<p>Stjärnblicken är tekniskt förberedd för att visa annonser via tredjepartsleverantörer, främst Google AdSense. För att möjliggöra detta används cookies (små textfiler) som hjälper till att mäta trafik och, vid aktivering av annonser, visa innehåll som är relevant för dig.</p>
+<ul>
+    <li><strong>Cookies för annonser:</strong> Google och dess partners använder cookies för att visa annonser baserat på besökares interaktion med denna och andra webbplatser.</li>
+    <li><strong>DART-cookie:</strong> Vid användning av Google AdSense används DART-cookies för att anpassa annonser. Du kan när som helst välja bort detta genom att besöka Googles sekretesspolicy för annonser.</li>
+</ul>
+
+<h3>2. Tredjepartsleverantörer</h3>
+<p>I samband med framtida annonsering kan tredjepartsannonsörer använda cookies och webbeacons för att mäta effektiviteten i sina kampanjer. Stjärnblicken har ingen tillgång till eller kontroll över dessa cookies som sätts av externa leverantörer.</p>
+
+<h3>3. Loggfiler</h3>
+<p>Precis som de flesta moderna webbplatser använder vi loggfiler. Detta är en standardprocedur för att analysera trafik och säkerställa webbplatsens funktion. Informationen inkluderar anonymiserade IP-adresser, webbläsartyp, datum/tid och vilka sidor som besöks. Denna data kan inte kopplas till dig som individ.</p>
+
+<h3>4. Dina rättigheter & Valmöjligheter</h3>
+<p>Du har full kontroll över din data. Du kan blockera cookies direkt i din webbläsares inställningar eller använda vår cookie-banner för att hantera ditt samtycke. För att välja bort personlig annonsering globalt, besök gärna <a href="https://www.aboutads.info" target="_blank">www.aboutads.info</a>.</p>
+
+<p><em>Senast uppdaterad: Januari 2026</em></p>
+    </div>
+</div>
+<div id="cookie-banner" class="cookie-container">
+    <div class="cookie-content">
+        <div class="cookie-icon">🌌</div>
+        <div class="cookie-text">
+            <h3>Cookies i rymden?</h3>
+            <p>Vi använder cookies för att anpassa innehåll och annonser (Google Ads) för att ge dig den bästa upplevelsen av universum. Genom att fortsätta godkänner du vår <a href="#" onclick="openModal('privacy-modal')">integritetspolicy</a>.</p>
+        </div>
+        <div class="cookie-actions">
+            <button onclick="acceptCookies()" class="accept-btn">Jag förstår</button>
+        </div>
+    </div>
+</div>
+    <script src="script.js"></script>
+</body>
+</html>

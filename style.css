@@ -1,0 +1,342 @@
+body {
+    margin: 0;
+    font-family: 'Georgia', serif; /* Ger en mer tidlös/mänsklig känsla */
+    background-color: #050a14;
+    color: #e0e0e0;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.video-header {
+    position: relative;
+    height: 400px; /* Eller den höjd du vill ha */
+    width: 100%;
+    overflow: hidden;
+    display: flex; /* För att centrera texten vertikalt */
+    align-items: center; /* Centrerar vertikalt */
+    justify-content: center; /* Centrerar horisontellt */
+    text-align: center;
+    color: #fff;
+}
+
+.video-header video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: 0;
+    -ms-transform: translateX(-50%) translateY(-50%);
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+    background-size: cover;
+}
+
+.header-overlay {
+    position: relative; /* Viktigt så att overlay ligger ovanpå videon */
+    z-index: 1; /* Säkerställer att texten ligger över videon */
+    background: rgba(0, 0, 0, 0.4); /* Ger texten bättre läsbarhet */
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.header-overlay h1 {
+    color: #ffcc00; /* Din accentfärg */
+    font-size: 3rem;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+}
+
+.header-overlay p {
+    font-size: 1.2rem;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+}
+
+h1 { color: #ffcc00; font-size: 2.5rem; }
+
+.search-section {
+    background: #0f172a;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    text-align: center;
+    border: 1px solid #1e293b;
+}
+
+input[type="date"] {
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    margin-right: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    background: #ffcc00;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.card {
+    background: #ffffff05;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+img, iframe {
+    width: 100%;
+    border-radius: 10px;
+    margin: 20px 0;
+}
+
+.info-box {
+    padding: 20px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+}
+
+#title { color: #fff; }
+
+#media-container {
+    min-height: 300px; /* Reserverar plats för bilden */
+    background: #0a1128;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+}
+/* TABORT NÄR GOOGLE GODKÄNT ADS!!!
+/* Gömmer annonserna tills vi är redo att köra live */
+.ad-space {
+    display: none; 
+}
+
+.facts-container {
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+@media (max-width: 600px) {
+    .facts-container { grid-template-columns: 1fr; }
+}
+
+.facts-card {
+    background: linear-gradient(145deg, #16213e, #0f172a);
+    border-left: 4px solid #ffcc00;
+}
+
+#fun-fact {
+    font-style: italic;
+    transition: opacity 0.3s ease;
+    min-height: 60px;
+}
+
+.small-btn {
+    background: transparent;
+    border: 1px solid #ffcc00;
+    color: #ffcc00;
+    padding: 5px 12px;
+    font-size: 0.8rem;
+    margin-top: 10px;
+    border-radius: 20px;
+}
+
+.small-btn:hover {
+    background: #ffcc00;
+    color: #000;
+}
+
+.static-info h3 {
+    color: #ffcc00;
+    margin-top: 0;
+}
+
+/* Modal-stilar */
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1000; 
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.8);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: #0f172a;
+    margin: 5% auto; /* Mindre marginal i toppen för att få plats */
+    padding: 30px;
+    border: 1px solid #ffcc00;
+    width: 90%;
+    max-width: 600px;
+    border-radius: 15px;
+    color: #e0e0e0;
+    
+    /* --- HÄR ÄR FIXEN --- */
+    max-height: 80vh;    /* Modalen får max vara 80% av skärmens höjd */
+    overflow-y: auto;    /* Aktiverar scroll när texten är för lång */
+    position: relative;
+}
+
+/* Gör scroll-listen lite snyggare och "rymdig" */
+.modal-content::-webkit-scrollbar {
+    width: 8px;
+}
+.modal-content::-webkit-scrollbar-thumb {
+    background: #ffcc00;
+    border-radius: 10px;
+}
+.modal-content::-webkit-scrollbar-track {
+    background: #0a1128;
+}
+
+.close {
+    color: #ffcc00;
+    position: sticky; /* Håller knappen synlig även när du scrollar */
+    top: 0;
+    float: right;
+    font-size: 32px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10;
+    background: #0f172a; /* Samma som bakgrunden för att inte se genomskinlig ut */
+    padding: 0 5px;
+}
+
+.footer-links a {
+    color: #666;
+    text-decoration: none;
+    font-size: 0.9rem;
+    margin: 0 10px;
+}
+
+.footer-links a:hover { color: #ffcc00; }
+
+.cookie-container {
+    position: fixed;
+    bottom: -100%; /* Startar utanför skärmen */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 600px;
+    background: rgba(15, 23, 42, 0.85); /* Halvtransparent mörkblå */
+    backdrop-filter: blur(12px); /* Glas-effekt */
+    border: 1px solid rgba(255, 204, 0, 0.3);
+    border-radius: 20px;
+    padding: 20px;
+    z-index: 9999;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+    transition: bottom 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+.cookie-container.show {
+    bottom: 30px; /* Glider upp */
+}
+
+.cookie-content {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.cookie-icon { font-size: 2rem; }
+
+.cookie-text h3 {
+    margin: 0;
+    color: #ffcc00;
+    font-size: 1.1rem;
+}
+
+.cookie-text p {
+    margin: 5px 0 0;
+    font-size: 0.85rem;
+    color: #ccc;
+}
+
+.accept-btn {
+    background: #ffcc00;
+    color: #000;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-weight: bold;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: transform 0.2s;
+}
+
+.accept-btn:hover {
+    transform: scale(1.05);
+}
+
+@media (max-width: 500px) {
+    .cookie-content { flex-direction: column; text-align: center; }
+}
+
+/* --- TILLÄGG FÖR OM OSS-SEKTIONEN --- */
+.about-section h2 {
+    color: #ffcc00;
+    border-bottom: 2px solid rgba(255, 204, 0, 0.2);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    font-family: 'Arial', sans-serif; /* Eller det typsnitt du använder */
+}
+
+.intro-text {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #ffffff;
+    margin-bottom: 25px;
+}
+
+.about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Två spalter */
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+/* Gör så att spalterna staplas på varandra i mobilen */
+@media (max-width: 600px) {
+    .about-grid { 
+        grid-template-columns: 1fr; 
+    }
+}
+
+.about-item h3 {
+    font-size: 1rem;
+    color: #ffcc00;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.about-item p {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: #cccccc;
+}
+
+.personal-note {
+    border-left: 3px solid #ffcc00;
+    padding-left: 20px;
+    margin: 30px 0;
+    font-style: italic;
+    color: #bbbbbb;
+    background: rgba(255, 204, 0, 0.05);
+    padding: 15px;
+    border-radius: 0 10px 10px 0;
+}
