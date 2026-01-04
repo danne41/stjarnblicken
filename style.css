@@ -341,24 +341,34 @@ img, iframe {
     border-radius: 0 10px 10px 0;
 }
 
+/* Se till att innehållet hamnar framför videon */
+.header-content {
+    position: relative;
+    z-index: 10; /* Detta lyfter fram texten och menyn */
+    text-align: center;
+    color: white;
+}
+
 .header-nav {
-    margin-top: 20px;
+    margin-top: 25px;
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 30px;
 }
 
 .header-nav a {
-    color: #ffcc00;
+    color: #ffcc00; /* Guldgul färg som syns bra mot rymden */
     text-decoration: none;
-    font-size: 0.9rem;
+    font-size: 1rem;
+    font-weight: bold;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    transition: 0.3s;
-    border-bottom: 1px solid transparent;
+    letter-spacing: 1.5px;
+    transition: all 0.3s ease;
+    padding: 5px 10px;
 }
 
 .header-nav a:hover {
-    border-bottom: 1px solid #ffcc00;
-    opacity: 0.8;
+    color: #ffffff;
+    text-shadow: 0 0 10px #ffcc00;
+    transform: translateY(-2px);
 }
