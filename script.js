@@ -54,10 +54,12 @@ function renderContent(data) {
 // 4. RESERVPLAN
 function showFallback() {
     document.getElementById('title').innerText = "Vintergatan väntar";
-    document.getElementById('description').innerText = "Just nu har vi svårt att nå NASA:s servrar. Det kan bero på underhåll eller att datumet du valt ännu inte publicerats i deras tidszon. Prova igen om en liten stund!";
-    document.getElementById('media-container').innerHTML = `<img src="https://images.unsplash.com/photo-1464802686167-b939a6910659?auto=format&fit=crop&w=800&q=80" style="width:100%; border-radius:10px;">`;
+    document.getElementById('description').innerText = "Just nu har vi svårt att nå NASA:s servrar. Det kan bero på tillfälligt underhåll. Prova att ladda om sidan om en liten stund!";
+    
+    // Använd en stabil länk från Unsplash istället för en lokal fil
+    const mediaContainer = document.getElementById('media-container');
+    mediaContainer.innerHTML = `<img src="https://images.unsplash.com/photo-1464802686167-b939a6910659?auto=format&fit=crop&w=1200&q=80" style="width:100%; border-radius:10px;" alt="Stjärnhimmel">`;
 }
-
 // 5. ÖVERSÄTTNING
 async function translateToSwedish(text, elementId) {
     try {
