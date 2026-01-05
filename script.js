@@ -247,3 +247,39 @@ window.addEventListener('load', () => {
         if (issMap) issMap.invalidateSize();
     }, 800);
 });
+
+async function updateISSPosition() {
+    try {
+        const response = await fetch('https://api.wheretheiss.at/v1/satellites/25544');
+        const data = await response.json();
+        
+        // Uppdatera Kartan och Markören (som tidigare)
+        const { latitude, longitude, velocity, altitude, visibility } = data;
+        issMarker.setLatLng([latitude, longitude]);
+        issMap.setView([latitude, longitude], issMap.getZoom());
+
+        // Uppdatera de nya boxarna
+        document.getElementById('iss-speed').innerText = Math.round(velocity).toLocaleString();
+        document.getElementById('iss-alt').innerText = Math.round(altitude);
+        document.getElementById('iss-visibility').innerText = visibility.charAt(0).toUpperCase() + visibility.slice(1);
+
+    } catch (error) {
+        console.error('Kunde inte hämta stats:', error);
+    }
+}
+
+// Funktion för att hämta antal personer i rymden
+async function getCrewCount() {
+    try {
+        const response = await fetch('http://api.open-notify.org/astros.json');
+        const data = await response.json();
+        // Filtrera så vi bara ser de som är på ISS
+        const issCrew = data.people.filter(p => p.craft === 'ISS');
+        document.getElementById('iss-crew').innerText = issCrew.length;
+    } catch (e) {
+        document.getElementById('iss-crew').innerText = "?";
+    }
+}
+
+// Kör crew-count en gång vid start
+getCrewCount();
