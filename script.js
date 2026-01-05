@@ -185,35 +185,34 @@ function shareOnFacebook() {
     window.open(shareUrl, '_blank', 'width=600,height=400');
 }
 
-// Ta bort den gamla kartan innan vi skapar den nya
+// Ta bort gammal karta
 if (typeof map !== 'undefined') { map.remove(); }
 
+// Skapa kartan
 const map = L.map('issMap', {
     dragging: false,
     scrollWheelZoom: true,
     zoomControl: true
-}).setView([0, 0], 3);
+}).setView([59.3, 18.0], 3); // Startar över Norden innan den hittar ISS
 
-// BYT TILL DENNA: Wikimedia Maps (Tydlig, ljus och med internationella namn)
-L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png', {
-    attribution: '<a href="https://wikimediafoundation.org/wiki/Maps_Terms_of_Use">Wikimedia</a>'
+// ANVÄND DENNA: Standard OpenStreetMap (Garanterat stabil och ljus)
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 
-// NY IKON: En tydlig silhuett av ISS (vit/blå)
+// IKON: En tydlig rymdstation-ikon
 const issIcon = L.icon({
-    iconUrl: 'https://img.icons8.com/external-flatart-icons-flat-flatarticons/512/external-satellite-space-flatart-icons-flat-flatarticons-1.png', 
-    iconSize: [45, 45],
-    iconAnchor: [22, 22]
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/2026/2026521.png', 
+    iconSize: [40, 40],
+    iconAnchor: [20, 20]
 });
-
-// Om ovanstående ikon också ser konstig ut, testa denna (enkel rymdstation):
-// iconUrl: 'https://cdn-icons-png.flaticon.com/512/2026/2026521.png'
 
 const marker = L.marker([0, 0], { icon: issIcon }).addTo(map);
 
 async function updateISS() {
     try {
         const response = await fetch('https://api.wheretheiss.at/v1/satellites/25544');
+        if (!response.ok) throw new Error('API-fel');
         const data = await response.json();
         const { latitude, longitude } = data;
 
@@ -221,14 +220,14 @@ async function updateISS() {
         map.setView([latitude, longitude], map.getZoom());
         
     } catch (error) {
-        console.error('Kunde inte hämta ISS-data:', error);
+        console.error('ISS-data kunde inte laddas:', error);
     }
 }
 
-// Starta direkt
+// Tvinga kartan att rita upp sig ordentligt
 setTimeout(() => { 
     map.invalidateSize();
     updateISS();
-}, 500);
+}, 800);
 
 setInterval(updateISS, 5000);
