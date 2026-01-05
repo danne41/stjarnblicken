@@ -184,13 +184,6 @@ function shareOnFacebook() {
     const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
     window.open(shareUrl, '_blank', 'width=600,height=400');
 }
-// Skapa kartan och centrera den
-const map = L.map('issMap').setView([0, 0], 2);
-
-// Lägg till ett snyggt mörkt rymd-tema på kartan
-L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-    attribution: '© OpenStreetMap'
-}).addTo(map);
 
 // Skapa en ikon för ISS
 // Initiera kartan med inställningar för att låsa användarens rörelser
