@@ -185,49 +185,65 @@ function shareOnFacebook() {
     window.open(shareUrl, '_blank', 'width=600,height=400');
 }
 
-// Ta bort gammal karta
-if (typeof map !== 'undefined') { map.remove(); }
+// 1. Skapa variabeln först (utan att tilldela värde)
+let issMap; 
+let issMarker;
 
-// Skapa kartan
-const map = L.map('issMap', {
-    dragging: false,
-    scrollWheelZoom: true,
-    zoomControl: true
-}).setView([59.3, 18.0], 3); // Startar över Norden innan den hittar ISS
-
-// ANVÄND DENNA: Standard OpenStreetMap (Garanterat stabil och ljus)
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-}).addTo(map);
-
-// IKON: En tydlig rymdstation-ikon
+// 2. Skapa ikonen
 const issIcon = L.icon({
     iconUrl: 'https://cdn-icons-png.flaticon.com/512/2026/2026521.png', 
     iconSize: [40, 40],
     iconAnchor: [20, 20]
 });
 
-const marker = L.marker([0, 0], { icon: issIcon }).addTo(map);
+// 3. Funktion för att starta kartan
+function initISSMap() {
+    // Om kartan redan råkar finnas, ta bort den för att undvika dubbletter
+    if (issMap) {
+        issMap.remove();
+    }
 
-async function updateISS() {
+    // Initiera kartan
+    issMap = L.map('issMap', {
+        dragging: false,
+        scrollWheelZoom: true,
+        zoomControl: true
+    }).setView([0, 0], 3);
+
+    // Lägg till det stabila kartlagret
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap'
+    }).addTo(issMap);
+
+    // Skapa markören (startar på 0,0)
+    issMarker = L.marker([0, 0], { icon: issIcon }).addTo(issMap);
+    
+    // Börja hämta data direkt
+    updateISSPosition();
+    setInterval(updateISSPosition, 5000);
+}
+
+// 4. Funktion för att hämta positionen
+async function updateISSPosition() {
     try {
         const response = await fetch('https://api.wheretheiss.at/v1/satellites/25544');
-        if (!response.ok) throw new Error('API-fel');
         const data = await response.json();
         const { latitude, longitude } = data;
 
-        marker.setLatLng([latitude, longitude]);
-        map.setView([latitude, longitude], map.getZoom());
-        
+        if (issMarker && issMap) {
+            issMarker.setLatLng([latitude, longitude]);
+            issMap.setView([latitude, longitude], issMap.getZoom());
+        }
     } catch (error) {
-        console.error('ISS-data kunde inte laddas:', error);
+        console.error('Kunde inte hämta ISS-data:', error);
     }
 }
 
-// Tvinga kartan att rita upp sig ordentligt
-setTimeout(() => { 
-    map.invalidateSize();
-    updateISS();
-}, 800);
-
-setInterval(updateISS, 5000);
+// 5. Kör igång allt när sidan laddats
+window.addEventListener('load', () => {
+    setTimeout(() => {
+        initISSMap();
+        // Tvinga kartan att rita om sig så den inte blir grå/vit
+        if (issMap) issMap.invalidateSize();
+    }, 800);
+});
