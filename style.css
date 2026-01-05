@@ -620,9 +620,12 @@ img, iframe {
 }
 
 .stat-value {
+    display: inline-block;
+    min-width: 20px;
     color: #fff;
-    font-size: 1.2rem;
-    font-weight: bold;
+    font-size: 1.4rem; /* Gjorde den lite större för att matcha din inspiration */
+    font-weight: 700;
+    font-family: 'Courier New', monospace; /* Ger en teknisk känsla */
 }
 
 .stat-unit {
