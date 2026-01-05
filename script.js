@@ -270,17 +270,22 @@ async function updateISSPosition() {
 
 // Funktion för att hämta antal personer i rymden
 async function getCrewCount() {
+    const crewElement = document.getElementById('iss-crew');
+    
+    // Sätt ett standardvärde direkt (Just nu är det 7 personer på ISS)
+    // Detta gör att det aldrig står "Loading..." om nätverket segar
+    crewElement.innerText = "7"; 
+
     try {
-        // Vi testar en säkrare källa (denna stödjer HTTPS)
+        // Vi använder en spegel-länk som ofta fungerar bättre med HTTPS
         const response = await fetch('https://corquaid.github.io/international-space-station-api/api/v1/crew/');
-        const data = await response.json();
-        
-        // Räkna hur många personer som är listade
-        const count = data.length; 
-        document.getElementById('iss-crew').innerText = count;
+        if (response.ok) {
+            const data = await response.json();
+            if (data && data.length > 0) {
+                crewElement.innerText = data.length;
+            }
+        }
     } catch (e) {
-        console.log("Kunde inte hämta crew via API, använder standardvärde.");
-        // Om API:et ligger nere, visa det aktuella antalet (just nu 7 personer)
-        document.getElementById('iss-crew').innerText = "7"; 
+        console.log("Kunde inte nå Crew-API, behåller standardvärde 7.");
     }
 }
