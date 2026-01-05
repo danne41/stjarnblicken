@@ -53,12 +53,21 @@ function renderContent(data) {
 
 // 4. RESERVPLAN
 function showFallback() {
-    document.getElementById('title').innerText = "Vintergatan väntar";
-    document.getElementById('description').innerText = "Just nu har vi svårt att nå NASA:s servrar. Det kan bero på tillfälligt underhåll. Prova att ladda om sidan om en liten stund!";
+    const container = document.getElementById('media-container');
+    const title = document.getElementById('title');
+    const desc = document.getElementById('description');
+
+    title.innerText = "Universum vilar aldrig (men NASA:s server gör det)";
     
-    // Använd en stabil länk från Unsplash istället för en lokal fil
-    const mediaContainer = document.getElementById('media-container');
-    mediaContainer.innerHTML = `<img src="https://images.unsplash.com/photo-1464802686167-b939a6910659?auto=format&fit=crop&w=1200&q=80" style="width:100%; border-radius:10px;" alt="Stjärnhimmel">`;
+    desc.innerHTML = `
+        <p>Just nu har NASA:s bildarkiv lite tekniska problem, men rymden är lika vacker för det! 
+        Under tiden vi väntar på att anslutningen ska komma igång igen kan du läsa våra senaste artiklar här nedanför.</p>
+        <p><i>Tips: Prova att ladda om sidan om en stund för att se dagens unika bild!</i></p>
+    `;
+
+    container.innerHTML = `
+        <img src="backup.jpg" alt="Vacker rymdbild" class="featured-image" style="width:100%; border-radius:15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+    `;
 }
 // 5. ÖVERSÄTTNING
 async function translateToSwedish(text, elementId) {
