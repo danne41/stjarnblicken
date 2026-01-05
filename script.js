@@ -193,8 +193,23 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
 }).addTo(map);
 
 // Skapa en ikon för ISS
+// Initiera kartan med inställningar för att låsa användarens rörelser
+const map = L.map('issMap', {
+    dragging: false,        // Inaktiverar att man drar i kartan
+    scrollWheelZoom: true,  // Tillåter zoomning
+    doubleClickZoom: true,
+    boxZoom: false,
+    keyboard: false
+}).setView([0, 0], 3);
+
+// Ljus kart-stil (OpenStreetMap Standard)
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap'
+}).addTo(map);
+
+// Stabil länk till en ISS-ikon (PNG fungerar ofta bättre än SVG i Leaflet)
 const issIcon = L.icon({
-    iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/d/d0/International_Space_Station.svg',
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1043/1043444.png',
     iconSize: [40, 40],
     iconAnchor: [20, 20]
 });
@@ -207,14 +222,22 @@ async function updateISS() {
         const data = await response.json();
         const { latitude, longitude } = data;
 
-        // Uppdatera ikonen på kartan
+        // Uppdatera markören
         marker.setLatLng([latitude, longitude]);
-        map.panTo([latitude, longitude]);
+        
+        // Flytta kartan så den alltid är centrerad på ISS (Låst fokus)
+        map.setView([latitude, longitude], map.getZoom(), {
+            animate: true,
+            pan: { duration: 1 }
+        });
     } catch (error) {
         console.error('Kunde inte hämta ISS-data:', error);
     }
 }
 
-// Uppdatera positionen var 5:e sekund
-setInterval(updateISS, 5000);
+// Kör direkt och sedan var 5:e sekund
 updateISS();
+setInterval(updateISS, 5000);
+
+// Fix för att säkerställa att kartan ritas ut rätt direkt
+setTimeout(() => { map.invalidateSize(); }, 500);
