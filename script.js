@@ -184,3 +184,37 @@ function shareOnFacebook() {
     const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
     window.open(shareUrl, '_blank', 'width=600,height=400');
 }
+// Skapa kartan och centrera den
+const map = L.map('issMap').setView([0, 0], 2);
+
+// Lägg till ett snyggt mörkt rymd-tema på kartan
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    attribution: '© OpenStreetMap'
+}).addTo(map);
+
+// Skapa en ikon för ISS
+const issIcon = L.icon({
+    iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/d/d0/International_Space_Station.svg',
+    iconSize: [40, 40],
+    iconAnchor: [20, 20]
+});
+
+const marker = L.marker([0, 0], { icon: issIcon }).addTo(map);
+
+async function updateISS() {
+    try {
+        const response = await fetch('https://api.wheretheiss.at/v1/satellites/25544');
+        const data = await response.json();
+        const { latitude, longitude } = data;
+
+        // Uppdatera ikonen på kartan
+        marker.setLatLng([latitude, longitude]);
+        map.panTo([latitude, longitude]);
+    } catch (error) {
+        console.error('Kunde inte hämta ISS-data:', error);
+    }
+}
+
+// Uppdatera positionen var 5:e sekund
+setInterval(updateISS, 5000);
+updateISS();
