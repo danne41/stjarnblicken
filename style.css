@@ -515,54 +515,45 @@ img, iframe {
     background-color: #166fe5;
     transform: scale(1.05);
 }
+/* Själva behållaren som håller båda boxarna */
 .iss-container {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: row; /* Tvingar dem att ligga i en rad */
+    flex-wrap: nowrap;   /* Förhindrar att de hoppar ner på nästa rad på desktop */
     gap: 20px;
     justify-content: center;
+    align-items: stretch;
     padding: 20px;
-    margin-top: 40px;
+    margin: 40px auto;
+    max-width: 1200px;  /* Gör att de inte blir för utspridda på jättestora skärmar */
 }
 
+/* Inställningar för varje enskild box */
 .iss-box {
-    background: rgba(255, 255, 255, 0.05); /* Svagt genomskinlig */
-    backdrop-filter: blur(10px); /* Frostat glas-effekt */
-    border-radius: 20px; /* Snygga runda hörn */
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     padding: 15px;
-    flex: 1;
-    min-width: 320px;
-    max-width: 600px;
+    width: 50%; /* Ger dem exakt hälften av utrymmet var */
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-    transition: transform 0.3s ease;
 }
 
-.iss-box:hover {
-    transform: translateY(-5px); /* Lyfter lite när man håller musen över */
+/* Justering för mobil – här VILL vi att de hamnar under varandra för att inte bli för små */
+@media (max-width: 768px) {
+    .iss-container {
+        flex-direction: column; /* Stapla dem på höjden på små skärmar */
+    }
+    .iss-box {
+        width: 100%; /* Ta upp hela bredden på mobilen */
+    }
 }
 
-.iss-box h3 {
-    color: #fff;
-    margin-bottom: 15px;
-    font-size: 1.2rem;
-    text-align: center;
-    font-family: 'Arial', sans-serif;
-    letter-spacing: 1px;
-}
-
-/* För att göra inbäddningen responsiv (följer boxens storlek) */
+/* För att videon och kartan ska hålla samma höjd */
 .video-responsive, .map-responsive {
     overflow: hidden;
-    padding-bottom: 56.25%; /* 16:9 format */
+    padding-bottom: 56.25%; /* Håller 16:9 formatet */
     position: relative;
     height: 0;
-    border-radius: 12px; /* Rundade hörn även på själva innehållet */
-}
-
-.video-responsive iframe, .map-responsive iframe {
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: 100%;
-    position: absolute;
+    border-radius: 12px;
 }
