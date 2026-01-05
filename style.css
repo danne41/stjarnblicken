@@ -516,44 +516,65 @@ img, iframe {
     transform: scale(1.05);
 }
 /* Själva behållaren som håller båda boxarna */
+/* 1. Huvudbehållaren */
 .iss-container {
     display: flex;
-    flex-direction: row; /* Tvingar dem att ligga i en rad */
-    flex-wrap: nowrap;   /* Förhindrar att de hoppar ner på nästa rad på desktop */
+    flex-direction: row;
+    flex-wrap: nowrap;
     gap: 20px;
     justify-content: center;
     align-items: stretch;
     padding: 20px;
     margin: 40px auto;
-    max-width: 1200px;  /* Gör att de inte blir för utspridda på jättestora skärmar */
+    max-width: 1200px;
 }
 
-/* Inställningar för varje enskild box */
+/* 2. Själva boxarna */
 .iss-box {
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(10px);
     border-radius: 20px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     padding: 15px;
-    width: 50%; /* Ger dem exakt hälften av utrymmet var */
+    width: 50%; /* Bredvid varandra på dator */
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
 }
 
-/* Justering för mobil – här VILL vi att de hamnar under varandra för att inte bli för små */
+.iss-box h3 {
+    color: #fff;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+/* 3. Responsiviteten (Behåll denna!) */
 @media (max-width: 768px) {
     .iss-container {
-        flex-direction: column; /* Stapla dem på höjden på små skärmar */
+        flex-direction: column; /* Stapla på mobil */
+        flex-wrap: wrap;
     }
     .iss-box {
-        width: 100%; /* Ta upp hela bredden på mobilen */
+        width: 100%; /* Full bredd på mobil */
     }
 }
 
-/* För att videon och kartan ska hålla samma höjd */
+/* 4. Video och Karta format (Behåll denna!) */
 .video-responsive, .map-responsive {
     overflow: hidden;
-    padding-bottom: 56.25%; /* Håller 16:9 formatet */
+    padding-bottom: 56.25%; /* 16:9 format */
     position: relative;
     height: 0;
     border-radius: 12px;
+    background: #000; /* Svart bakgrund medan de laddar */
+}
+
+.video-responsive iframe, .map-responsive iframe {
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    border: none;
 }
