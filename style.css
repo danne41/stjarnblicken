@@ -584,3 +584,9 @@ img, iframe {
     border-radius: 12px;
     background: #f0f0f0; /* Ljus bakgrund medan den laddar */
 }
+
+.video-js {
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 12px;
+}
