@@ -578,3 +578,7 @@ img, iframe {
     position: absolute;
     border: none;
 }
+#issMap {
+    width: 100%;
+    background: #111; /* Svart bakgrund innan kartan laddas */
+}
